@@ -19,16 +19,11 @@ onMounted(() => {
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-
-    <p>{{ message }}</p>
-
-    <HelloWorld msg="Vite + Vue" />
+    <nav>
+      <router-link to="/sign-in">Home</router-link> |
+      <router-link to="/sign-up">About</router-link>
+    </nav>
+    <router-view /> <!-- This is where the page content will be shown -->
   </div>
 </template>
 
