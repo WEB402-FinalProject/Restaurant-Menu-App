@@ -1,7 +1,12 @@
 <script setup>
-import { Button } from '@/components/ui/button'
+import Footer from './components/Footer/Footer.vue'
+import Navbar from './components/Navbar/Navbar.vue'
+import Hero from './components/Hero/Hero.vue'
 </script>
 
 <template>
-  <Button>Button</Button>
+<Navbar />
+<Hero />
+<Menu/>
+<Footer />
 </template>
