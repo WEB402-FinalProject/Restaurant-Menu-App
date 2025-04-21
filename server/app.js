@@ -3,9 +3,10 @@ const session = require('express-session');
 const passport = require('passport');
 const authRoutes = require('./routes/auth.routes');
 const categoryRoutes = require('./routes/category.routes');
+const menuRoutes = require('./routes/menu.routes');
 
 require('./config/passport');
-require('dotenv').config();
+require("dotenv").config({ path: "./server/.env" });
 
 const app = express();
 
@@ -23,7 +24,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use(authRoutes);
-app.use(categoryRoutes);
+app.use('/api/auth',authRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/menu', menuRoutes);
 
 module.exports = app;
