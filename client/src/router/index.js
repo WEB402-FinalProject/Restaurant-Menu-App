@@ -7,6 +7,8 @@ import UserLayout from '@/layouts/UserLayout.vue'
 // Pages
 import AdminDashboard from '@/views/Admin/Dashboard.vue'
 import UserHome from '@/views/Users/Home.vue'
+import SignIn from '@/views/SignIn.vue'
+import Category from '@/views/Admin/Category.vue'
 
 const routes = [
   {
@@ -14,7 +16,8 @@ const routes = [
     component: AdminLayout,
     children: [
       { path: 'dashboard', component: AdminDashboard },
-      { path: 'users', component: AdminUsers }
+      { path: 'category', component: Category },
+
     ]
   },
   {
@@ -22,9 +25,14 @@ const routes = [
     component: UserLayout,
     children: [
       { path: '', component: UserHome },
-      { path: 'profile', component: UserProfile }
     ]
+  },
+  {
+    path: '/sign-in',
+    name: 'SignIn',
+    component: SignIn
   }
+
 ]
 
 const router = createRouter({
