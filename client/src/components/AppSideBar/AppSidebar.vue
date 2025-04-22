@@ -47,8 +47,8 @@ const items = [
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
+    title: "Menu",
+    url: "/admin/menu",
     icon: Calendar,
   },
   {

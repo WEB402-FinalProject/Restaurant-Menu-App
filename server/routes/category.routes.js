@@ -3,7 +3,7 @@ const ensureLogin = require('connect-ensure-login');
 const {createCategory, getCategories, getCategoryById, updateCategory, deleteCategory} = require('../controllers/category.controller');
 
 const router = express.Router();
-router.use(ensureLogin.ensureLoggedIn());
+// router.use(ensureLogin.ensureLoggedIn());
 
 router.post('/', createCategory)
 router.get('/', getCategories)

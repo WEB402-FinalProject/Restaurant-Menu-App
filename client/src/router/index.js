@@ -10,6 +10,7 @@ import UserHome from '@/views/Users/Home.vue'
 import SignIn from '@/views/SignIn.vue'
 import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
+import Menu from '@/views/Admin/Menu.vue'
 
 const routes = [
   {
@@ -18,6 +19,8 @@ const routes = [
     children: [
       { path: 'dashboard', component: AdminDashboard },
       { path: 'category', component: Category },
+      { path: 'menu', component: Menu },
+
 
     ]
   },
