@@ -12,34 +12,25 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter } from 'vue-router'
+import authService from '../services/authService/authService'
 
 const username = ref('')
 const password = ref('')
 const router = useRouter()
 
+
 const handleLogin = async (e) => {
   e.preventDefault()
 
   try {
-    const response = await fetch('http://localhost:3000/api/auth/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value,
-      }),
-    })
-
-    const data = await response.json()
-
-    if (response.ok) {
+    const response = await authService.login(username.value, password.value)
+    // const data =await response.data.json()
+    
+    if (response.statusText === "OK") {
       // Login success - handle redirect or token save
       alert('Login successful!')
       router.push('/admin/dashboard')
-      console.log(data)
+      // console.log(data)
     } else {
       // Login failed
       alert(data.message || 'Login failed')
