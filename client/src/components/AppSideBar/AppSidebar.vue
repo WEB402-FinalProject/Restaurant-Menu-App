@@ -94,7 +94,7 @@ const items = [
             <SidebarMenuButton asChild>
               <button
                 @click="handleLogout"
-                class="w-full text-left flex items-center gap-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                class="w-full text-left flex items-center gap-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
               >
                 <LogOut class="w-4 h-4" />
                 <span>Logout</span>
