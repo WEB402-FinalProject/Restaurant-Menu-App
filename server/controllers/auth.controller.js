@@ -2,12 +2,12 @@ const User = require('../models/User');
 
 exports.register = async (req, res) => {
   try {
-    const { username, password} = req.body;
-    const user = new User({ username });
+    const { fullname, username, password } = req.body;
+    const user = new User({ fullname, username });
     await User.register(user, password);
-    res.send('User registered');
+    res.status(200).json({ message: 'User registered' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).json({ message: err.message });
   }
 };
 
