@@ -8,6 +8,7 @@ import UserLayout from '@/layouts/UserLayout.vue'
 import AdminDashboard from '@/views/Admin/Dashboard.vue'
 import UserHome from '@/views/Users/Home.vue'
 import SignIn from '@/views/SignIn.vue'
+import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
 
 const routes = [
@@ -31,6 +32,11 @@ const routes = [
     path: '/sign-in',
     name: 'SignIn',
     component: SignIn
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 
 ]
