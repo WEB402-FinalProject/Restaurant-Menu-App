@@ -3,7 +3,7 @@ import api from '../api'
 export default {
   getMenus() {
     return api.get('/menu', {
-      withCredentials: false
+      withCredentials: true
     });
   },
 
