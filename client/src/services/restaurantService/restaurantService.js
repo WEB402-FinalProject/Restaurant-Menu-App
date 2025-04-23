@@ -8,18 +8,26 @@ export default {
   },
 
   createRestaurant(restaurantData) {
-    return api.post("/restaurants", restaurantData);
+    return api.post("/restaurants", restaurantData, {
+      withCredentials: true, // Ensure credentials are sent with the request
+    });
   },
 
   updateRestaurant(id, restaurantData) {
-    return api.put(`/restaurants/${id}`, restaurantData);
+    return api.put(`/restaurants/${id}`, restaurantData, {
+      withCredentials: true, // Ensure credentials are sent with the request
+    });
   },
 
   deleteRestaurant(id) {
-    return api.delete(`/restaurants/${id}`);
+    return api.delete(`/restaurants/${id}`, {
+      withCredentials: true, // Ensure credentials are sent with the request
+    });
   },
 
   getRestaurantById(id) {
-    return api.get(`/restaurants/${id}`);
+    return api.get(`/restaurants/${id}`, {
+      withCredentials: true, // Ensure credentials are sent with the request
+    });
   },
 };
