@@ -11,6 +11,7 @@ import SignIn from '@/views/SignIn.vue'
 import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
 import Menu from '@/views/Admin/Menu.vue'
+import Restaurant from '@/views/Admin/Restaurant.vue' // Add this import for the Restaurant CRUD
 
 const routes = [
   {
@@ -20,8 +21,7 @@ const routes = [
       { path: 'dashboard', component: AdminDashboard },
       { path: 'category', component: Category },
       { path: 'menu', component: Menu },
-
-
+      { path: 'restaurant', component: Restaurant }, // Add this route for Restaurant CRUD
     ]
   },
   {
@@ -37,18 +37,15 @@ const routes = [
     component: SignIn
   },
   {
+    path: '/login',
+    name: 'SignIn',
+    component: SignIn
+  },
+  {
     path: '/register',
     name: 'Register',
     component: Register
-  },
-
-    {
-      path: '/admin',
-      component: AdminLayout,
-      children: [
-        { path: 'menu', component: Menu },
-      ]
-    },  
+  }
 ]
 
 const router = createRouter({
