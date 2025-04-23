@@ -1,4 +1,4 @@
-const Menu = require('../models/menu');
+const Menu = require('../models/Menu')
 
 exports.createMenu = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ exports.getMenu = async (req, res) => {
 
   exports.updateMenu= async (req, res) => {
     try {
-      const menu = await menu.findByIdAndUpdate(req.params.id, req.body, {new: true})
+      const menu = await Menu.findByIdAndUpdate(req.params.id, req.body, {new: true})
       
         res.json(menu)
     } catch (err) {
