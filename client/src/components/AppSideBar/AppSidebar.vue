@@ -28,7 +28,7 @@ const handleLogout = async () => {
       method: "GET",
       credentials: "include",
     });
-    router.push("/sign-in"); // Redirect to login page after logout
+    router.push("/login"); // Redirect to login page after logout
   } catch (error) {
     console.error("Logout failed:", error);
   }

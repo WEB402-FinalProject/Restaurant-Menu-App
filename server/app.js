@@ -27,7 +27,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    sameSite: 'lax', // 'lax' is fine for dev; use 'none' if hosting frontend separately on https
+    secure: false     // true only if using HTTPS
+  }
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
