@@ -1,5 +1,5 @@
 const express = require("express");
-const ensureLogin = require("connect-ensure-login");
+const requireAuth = require('../middleware/authMiddleware');
 const {
   createCategory,
   getCategories,
@@ -10,7 +10,7 @@ const {
 const verifyRestaurantOwnership = require("../middleware/verifyRestaurant");
 
 const router = express.Router();
-router.use(ensureLogin.ensureLoggedIn());
+router.use(requireAuth);
 
 // Create Category
 router.post("/", verifyRestaurantOwnership, createCategory);

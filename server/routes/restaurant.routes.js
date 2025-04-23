@@ -1,5 +1,5 @@
 const express = require('express');
-const ensureLogin = require('connect-ensure-login');
+const requireAuth = require('../middleware/authMiddleware');
 const {
   createRestaurant,
   getAllRestaurants,
@@ -11,7 +11,7 @@ const {
 const router = express.Router();
 
 // Ensure the user is logged in before accessing any of these routes
-router.use(ensureLogin.ensureLoggedIn());
+router.use(requireAuth);
 
 // Routes
 router.post('/', createRestaurant);
