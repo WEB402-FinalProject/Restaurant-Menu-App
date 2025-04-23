@@ -6,6 +6,7 @@ const cors = require('cors'); //  import cors
 const authRoutes = require('./routes/auth.routes');
 const categoryRoutes = require('./routes/category.routes');
 const menuRoutes = require('./routes/menu.routes');
+const restaurantRoutes = require('./routes/restaurant.routes');
 
 require('./config/passport');
 require("dotenv").config({ path: "./server/.env" });
@@ -35,5 +36,6 @@ app.use(passport.session());
 app.use('/api/auth', authRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/menu', menuRoutes);
+app.use('/api/restaurants', restaurantRoutes);
 
 module.exports = app;
