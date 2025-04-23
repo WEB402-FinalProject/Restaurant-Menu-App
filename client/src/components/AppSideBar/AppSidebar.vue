@@ -37,6 +37,11 @@ const handleLogout = async () => {
 // Menu items.
 const items = [
   {
+    title: "Restaurant",
+    url: "/admin/restaurant",
+    icon: Home,
+  },
+  {
     title: "Dashboard",
     url: "/admin/dashboard",
     icon: Home,
