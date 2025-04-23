@@ -40,8 +40,15 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
-  }
+  },
 
+    {
+      path: '/admin',
+      component: AdminLayout,
+      children: [
+        { path: 'menu', component: Menu },
+      ]
+    },  
 ]
 
 const router = createRouter({

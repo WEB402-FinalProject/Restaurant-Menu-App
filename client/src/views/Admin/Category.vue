@@ -22,7 +22,13 @@
             </TableCell>
             <TableCell class="text-right">
               <div class="flex justify-end gap-2">
-                <UiButton variant="outline" size="sm">Edit</UiButton>
+                <UiButton
+  variant="outline"
+  size="sm"
+  @click="openEditModal(category)"
+>
+  Edit
+</UiButton>
                 <UiButton variant="destructive" size="sm">Delete</UiButton>
               </div>
             </TableCell>
@@ -37,7 +43,16 @@
       @close="showModal = false"
       @add="handleAddCategory"
     />
+
+    <EditCategoryModal
+  :show="showEditModal"
+  :category="selectedCategory"
+  @close="closeEditModal"
+  @update="handleUpdateCategory"
+/>
+
   </div>
+
 </template>
 
 <script setup>
@@ -65,9 +80,15 @@ import AddCategoryModal from '@/components/AddCategoryModal/AddCategoryModal.vue
 // Service
 import categoryService from '@/services/categoryService/categoryService'
 
+import EditCategoryModal from '@/components/EditCategoryModal/EditCategoryModal.vue'
+
+
 // State
 const categories = ref([])
 const showModal = ref(false)
+
+const showEditModal = ref(false)
+const selectedCategory = ref(null)
 
 // Event Handlers
 function handleAddCategory(name) {
@@ -89,6 +110,8 @@ onMounted(async () => {
     alert('Something went wrong. Try again.')
   }
 })
+
+
 </script>
 
 <style scoped lang="scss">

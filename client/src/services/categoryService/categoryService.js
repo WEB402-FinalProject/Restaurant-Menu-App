@@ -9,8 +9,20 @@ export default {
 
   createCategory(categoryData) {
     return api.post('/category', categoryData)
-  }
+  },
 
+  updateCategory(id, categoryData) {
+    return api.put(`/category/${id}`, categoryData)
+  },
+
+  deleteCategory(id) {
+    return api.delete(`/category/${id}`)
+  },
+
+  getCategoryById(id){
+    return api.get(`/category/${id}`)
   }
+  }
+  
 
   
