@@ -24,7 +24,7 @@ router.get('/logout', logout);
 
 router.get(
   '/dashboard',
-  ensureLogin.ensureLoggedIn(),
+  requireAuth,
   (req, res) => res.send('Welcome to your dashboard')
 );
 
