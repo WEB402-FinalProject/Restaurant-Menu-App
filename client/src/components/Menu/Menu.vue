@@ -52,7 +52,7 @@ import {
 } from '@/components/ui/select'
 import categoryService from '@/services/categoryService/categoryService'
 
-const categories= ref({})
+const categories= ref([])
 const router = useRouter();
 onMounted(async () => {
   try {
