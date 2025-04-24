@@ -18,11 +18,11 @@ const tableSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-//   restaurant: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Restaurant',
-//     required: true,
-//   }
+  restaurant: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Restaurant',
+    required: true,
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Table', tableSchema);
