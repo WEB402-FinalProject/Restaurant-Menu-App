@@ -8,6 +8,7 @@ const categoryRoutes = require('./routes/category.routes');
 const menuRoutes = require('./routes/menu.routes');
 const tableRoutes = require('./routes/table.routes');
 const restaurantRoutes = require('./routes/restaurant.routes');
+const publicRoutes = require('./routes/public.routes');
 
 require('./config/passport');
 require("dotenv").config({ path: "./server/.env" });
@@ -45,5 +46,7 @@ app.use('/api/menu', menuRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 
+// Public routes
+app.use('/api/public', publicRoutes);
 
 module.exports = app;
