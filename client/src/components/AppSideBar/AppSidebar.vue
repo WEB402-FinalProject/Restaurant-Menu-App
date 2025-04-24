@@ -3,7 +3,7 @@ import {
   Calendar,
   Home,
   Inbox,
-  Search,
+  Grid,
   Settings,
   LogOut,
   Utensils
@@ -55,9 +55,9 @@ const items = [
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Table",
+    url: "/admin/table",
+    icon: Grid,
   },
   {
     title: "Settings",
