@@ -21,5 +21,10 @@ export default {
 
   getMenuById(id) {
     return api.get(`/menu/${id}`);
+  },
+
+  getMenuByCategoryId(categoryId) {
+    return api.get(`/menu/category/${categoryId}`);
   }
+
 }

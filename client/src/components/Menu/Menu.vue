@@ -9,18 +9,19 @@
 
   <!-- Looping Cards -->
   <div class="flex flex-wrap justify-center gap-4 mt-8">
-    <div v-for="(item, index) in menuItems" :key="index">
-      <Card class="w-[280px] h-95 rounded-t-md p-0">
-        <CardContent class="p-0 ">
+    <div v-for="(item, index) in categories" :key="index">
+      <Card class="w-[280px] h-auto rounded-t-md p-0">
+        <!-- <CardContent class="p-0 ">
           <img :src="item.image" alt="Menu image" class="w-full h-48 object-cover rounded-t-md" />
-        </CardContent>
+        </CardContent> -->
         <CardHeader>
-          <CardTitle class="font-bold text-2xl">{{ item.title }}</CardTitle>
-          <CardDescription class="text-[15px]">{{ item.description }}</CardDescription>
+          <CardTitle class="font-bold text-2xl">{{ item.name }}</CardTitle>
+          <!-- <CardDescription class="text-[15px]">{{ item.description }}</CardDescription> -->
         </CardHeader>
         <CardFooter class="flex justify-between px-6 pb-6">
-          <Button class="w-full">{{ item.buttonText }}</Button>
-        </CardFooter>
+          <Button class="w-full" @click="goToCategory(item._id)">
+  {{ `Browse ${item.name} `}}
+</Button>        </CardFooter>
       </Card>
     </div>
   </div>
@@ -28,7 +29,8 @@
 
 
 <script setup>
-import { ref } from 'vue'
+import { ref , onMounted } from 'vue'
+import { useRouter } from "vue-router";
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -48,11 +50,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import categoryService from '@/services/categoryService/categoryService'
 
-const menuItems = ref([
-  { title: 'Appetizers', description: 'Start your meal with our delicious appetizers', buttonText: 'Browse Appetizers', image: '/Appetizers.avif' },
-  { title: 'Main Course', description: `Enjoy our chef's special main courses`, buttonText: 'Browse Main Course', image: '/Maincourse.avif' },
-  { title: 'Desserts', description: 'Finish your meal with something sweet', buttonText: 'Browse Desserts', image: 'Desserts.avif'},
-  { title: 'Beverages', description: 'Refresh yourself with our selection of drinks', buttonText: 'Browse Beverages', image: 'Beverage.avif' },
-])
+const categories= ref({})
+const router = useRouter();
+onMounted(async () => {
+  try {
+    const response = await categoryService.getCategories();
+    if (Array.isArray(response.data)) {
+      categories.value = response.data;
+    } else {
+      console.error("Expected array but got:", response.data);
+    }
+  } catch (error) {
+    console.error("Fetch categories error:", error);
+    alert("Something went wrong. Try again.");
+  }
+});
+const goToCategory = (category) => {
+  router.push(`/menu/${category}`);
+};
 </script>
