@@ -4,7 +4,7 @@ import {
   Home,
   Inbox,
   Grid,
-  Settings,
+  ShoppingCart,
   LogOut,
   Utensils
 } from "lucide-vue-next";
@@ -60,9 +60,9 @@ const items = [
     icon: Grid,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Orders",
+    url: "/admin/orders",
+    icon: ShoppingCart,
   },
 ];
 

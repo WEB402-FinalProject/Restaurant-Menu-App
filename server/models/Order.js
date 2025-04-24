@@ -18,6 +18,10 @@ const orderSchema = new mongoose.Schema({
     ref: "Restaurant",
     required: true,
   },
+  tableNumber: {
+    type: String,
+    required: true
+  },
   items: [orderItemSchema], // Keep the items array without quantity here
   status: {
     type: String,
