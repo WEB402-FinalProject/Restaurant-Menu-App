@@ -11,11 +11,10 @@ import SignIn from '@/views/SignIn.vue'
 import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
 import Menu from '@/views/Admin/Menu.vue'
-
-import Restaurant from '@/views/Admin/Restaurant.vue' // Add this import for the Restaurant CRUD
-import SelectRestaurant from '@/views/Admin/SelectRestaurant.vue' // Import SelectRestaurant
+import Restaurant from '@/views/Admin/Restaurant.vue'
+import Table from '@/views/Admin/Table.vue' // ✅ Add this import for the Table CRUD
+import SelectRestaurant from '@/views/Admin/SelectRestaurant.vue'
 import MenuByCategory from '@/views/Users/MenuByCategory.vue'
-
 
 const routes = [
   {
@@ -25,14 +24,14 @@ const routes = [
       { path: 'dashboard', component: AdminDashboard },
       { path: 'category', component: Category },
       { path: 'menu', component: Menu },
-      { path: 'restaurant', component: Restaurant }, // Add this route for Restaurant CRUD
+      { path: 'restaurant', component: Restaurant },
+      { path: 'table', component: Table }, // ✅ Add this route for Table CRUD
     ],
-    // Add navigation guard here for admin routes
     beforeEnter: (to, from, next) => {
       if (!localStorage.getItem('selectedRestaurant')) {
-        next('/select-restaurant'); // Redirect to select restaurant if not selected
+        next('/select-restaurant');
       } else {
-        next(); // Proceed to the requested route
+        next();
       }
     }
   },
@@ -41,9 +40,8 @@ const routes = [
     component: UserLayout,
     children: [
       { path: '', component: UserHome },
-      { path: 'menu/:category', component: MenuByCategory }, // <--  dynamic route here
+      { path: 'menu/:category', component: MenuByCategory },
     ]
-
   },
   {
     path: '/sign-in',
@@ -61,7 +59,7 @@ const routes = [
     component: Register
   },
   {
-    path: '/select-restaurant', // Add this route for selecting restaurant
+    path: '/select-restaurant',
     name: 'SelectRestaurant',
     component: SelectRestaurant
   }
