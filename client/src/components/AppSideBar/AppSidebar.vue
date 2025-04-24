@@ -29,6 +29,8 @@ const handleLogout = async () => {
       method: "GET",
       credentials: "include",
     });
+    localStorage.removeItem("selectedRestaurantName"); // Clear selected restaurant from localStorage
+    localStorage.removeItem("selectedRestaurant"); // Clear selected restaurant ID from localStorage
     router.push("/login"); // Redirect to login page after logout
   } catch (error) {
     console.error("Logout failed:", error);
