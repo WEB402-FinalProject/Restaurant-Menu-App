@@ -11,7 +11,11 @@ import SignIn from '@/views/SignIn.vue'
 import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
 import Menu from '@/views/Admin/Menu.vue'
+
+import Restaurant from '@/views/Admin/Restaurant.vue' // Add this import for the Restaurant CRUD
+import SelectRestaurant from '@/views/Admin/SelectRestaurant.vue' // Import SelectRestaurant
 import MenuByCategory from '@/views/Users/MenuByCategory.vue'
+
 
 const routes = [
   {
@@ -21,9 +25,16 @@ const routes = [
       { path: 'dashboard', component: AdminDashboard },
       { path: 'category', component: Category },
       { path: 'menu', component: Menu },
-
-
-    ]
+      { path: 'restaurant', component: Restaurant }, // Add this route for Restaurant CRUD
+    ],
+    // Add navigation guard here for admin routes
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('selectedRestaurant')) {
+        next('/select-restaurant'); // Redirect to select restaurant if not selected
+      } else {
+        next(); // Proceed to the requested route
+      }
+    }
   },
   {
     path: '/',
@@ -40,18 +51,20 @@ const routes = [
     component: SignIn
   },
   {
+    path: '/login',
+    name: 'SignIn',
+    component: SignIn
+  },
+  {
     path: '/register',
     name: 'Register',
     component: Register
   },
-
-    {
-      path: '/admin',
-      component: AdminLayout,
-      children: [
-        { path: 'menu', component: Menu },
-      ]
-    },  
+  {
+    path: '/select-restaurant', // Add this route for selecting restaurant
+    name: 'SelectRestaurant',
+    component: SelectRestaurant
+  }
 ]
 
 const router = createRouter({

@@ -6,6 +6,7 @@ import {
   Search,
   Settings,
   LogOut,
+  Utensils
 } from "lucide-vue-next";
 import {
   Sidebar,
@@ -28,7 +29,9 @@ const handleLogout = async () => {
       method: "GET",
       credentials: "include",
     });
-    router.push("/sign-in"); // Redirect to login page after logout
+    localStorage.removeItem("selectedRestaurantName"); // Clear selected restaurant from localStorage
+    localStorage.removeItem("selectedRestaurant"); // Clear selected restaurant ID from localStorage
+    router.push("/login"); // Redirect to login page after logout
   } catch (error) {
     console.error("Logout failed:", error);
   }
@@ -62,6 +65,21 @@ const items = [
     icon: Settings,
   },
 ];
+
+// Get selected restaurant data from localStorage
+const selectedRestaurantName = localStorage.getItem('selectedRestaurantName');
+
+// If a restaurant is selected, update the menu items dynamically and add it to the top
+if (selectedRestaurantName) {
+  // You can modify the 'title' or any other part of the menu item dynamically
+  items.unshift({  // Using unshift() to add to the top
+    title: `Restaurant: ${selectedRestaurantName}`, // Display the restaurant name or ID
+    url: `/select-restaurant`, // Link to restaurant page, with the ID
+    icon: Utensils, // Use an appropriate icon here
+  });
+}
+
+console.log(items);  // Check the updated menu items array
 </script>
 
 <template>

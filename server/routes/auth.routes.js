@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const ensureLogin = require('connect-ensure-login');
+const requireAuth = require('../middleware/authMiddleware');
 const { register, login, logout } = require('../controllers/auth.controller');
 
 const router = express.Router();
@@ -24,7 +24,7 @@ router.get('/logout', logout);
 
 router.get(
   '/dashboard',
-  ensureLogin.ensureLoggedIn(),
+  requireAuth,
   (req, res) => res.send('Welcome to your dashboard')
 );
 
