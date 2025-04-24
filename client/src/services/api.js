@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const restaurantId = localStorage.getItem("selectedRestaurantId");
+  const restaurantId = localStorage.getItem("selectedRestaurant");
   if (restaurantId) {
     config.headers["x-restaurant-id"] = restaurantId;
   }
