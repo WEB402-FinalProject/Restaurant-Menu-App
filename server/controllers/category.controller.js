@@ -5,7 +5,7 @@ exports.createCategory = async (req, res) => {
   try {
     const category = await Category.create({
       ...req.body,
-      restaurantId: req.user.restaurantId,
+      restaurantId: req.restaurantId,
     });
     res.json(category);
   } catch (err) {
@@ -15,9 +15,10 @@ exports.createCategory = async (req, res) => {
 
 // Get all categories for the logged-in user's restaurant
 exports.getCategories = async (req, res) => {
+  console.log(req.restaurantId);
   try {
     const categories = await Category.find({
-      restaurantId: req.user.restaurantId,
+      restaurantId: req.restaurantId,
     });
     res.json(categories);
   } catch (err) {
@@ -32,7 +33,7 @@ exports.getCategoryById = async (req, res) => {
     if (!category)
       return res.status(404).json({ message: "Category not found" });
 
-    if (String(category.restaurantId) !== String(req.user.restaurantId)) {
+    if (String(category.restaurantId) !== String(req.restaurantId)) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
@@ -49,7 +50,7 @@ exports.updateCategory = async (req, res) => {
     if (!category)
       return res.status(404).json({ message: "Category not found" });
 
-    if (String(category.restaurantId) !== String(req.user.restaurantId)) {
+    if (String(category.restaurantId) !== String(req.restaurantId)) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
@@ -68,7 +69,7 @@ exports.deleteCategory = async (req, res) => {
     if (!category)
       return res.status(404).json({ message: "Category not found" });
 
-    if (String(category.restaurantId) !== String(req.user.restaurantId)) {
+    if (String(category.restaurantId) !== String(req.restaurantId)) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 

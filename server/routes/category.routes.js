@@ -7,10 +7,11 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controllers/category.controller");
-const verifyRestaurantOwnership = require("../middleware/verifyRestaurant");
+const verifyRestaurantOwnership = require('../middleware/verifyRestaurant');
 
 const router = express.Router();
 router.use(requireAuth);
+router.use(verifyRestaurantOwnership);
 
 // Create Category
 router.post("/", verifyRestaurantOwnership, createCategory);
