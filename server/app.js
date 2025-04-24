@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth.routes');
 const categoryRoutes = require('./routes/category.routes');
 const menuRoutes = require('./routes/menu.routes');
 const tableRoutes = require('./routes/table.routes');
+const restaurantRoutes = require('./routes/restaurant.routes');
 
 require('./config/passport');
 require("dotenv").config({ path: "./server/.env" });
@@ -27,7 +28,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    sameSite: 'lax', // 'lax' is fine for dev; use 'none' if hosting frontend separately on https
+    secure: false     // true only if using HTTPS
+  }
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -37,5 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/tables', tableRoutes);
+app.use('/api/restaurants', restaurantRoutes);
+
 
 module.exports = app;

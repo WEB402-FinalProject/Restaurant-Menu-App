@@ -1,32 +1,32 @@
 import api from "../api";
 
 export default {
-  getCategories() {
-    return api.get("/category", {
+  getRestaurants() {
+    return api.get("/restaurants", {
       withCredentials: true,
     });
   },
 
-  createCategory(categoryData) {
-    return api.post("/category", categoryData, {
+  createRestaurant(restaurantData) {
+    return api.post("/restaurants", restaurantData, {
       withCredentials: true, // Ensure credentials are sent with the request
     });
   },
 
-  updateCategory(id, categoryData) {
-    return api.put(`/category/${id}`, categoryData, {
+  updateRestaurant(id, restaurantData) {
+    return api.put(`/restaurants/${id}`, restaurantData, {
       withCredentials: true, // Ensure credentials are sent with the request
     });
   },
 
-  deleteCategory(id) {
-    return api.delete(`/category/${id}`, {
+  deleteRestaurant(id) {
+    return api.delete(`/restaurants/${id}`, {
       withCredentials: true, // Ensure credentials are sent with the request
     });
   },
 
-  getCategoryById(id) {
-    return api.get(`/category/${id}`, {
+  getRestaurantById(id) {
+    return api.get(`/restaurants/${id}`, {
       withCredentials: true, // Ensure credentials are sent with the request
     });
   },

@@ -1,16 +1,20 @@
 const express = require('express');
-const ensureLogin = require('connect-ensure-login');
+
+const requireAuth = require('../middleware/authMiddleware');
 const {createMenu, getMenu, getMenuById, updateMenu, deleteMenu} = require('../controllers/menu.controller');
 
-const router = express.Router();
-// router.use(ensureLogin.ensureLoggedIn());
+const verifyRestaurantOwnership = require('../middleware/verifyRestaurant');
 
-// router.post('/', ensureLogin.ensureLoggedIn(),createMenu)
-router.post('/',createMenu)
+const router = express.Router();
+router.use(requireAuth);
+router.use(verifyRestaurantOwnership);
+
+router.post('/', verifyRestaurantOwnership, createMenu)
 router.get('/', getMenu)
 router.get('/:id', getMenuById)
-router.put('/:id', updateMenu)
-router.delete('/:id', deleteMenu)
+router.put('/:id', verifyRestaurantOwnership, updateMenu)
+router.delete('/:id', verifyRestaurantOwnership, deleteMenu)
 
+router.get('/category/:categoryId', getMenusByCategory);
 
 module.exports = router;

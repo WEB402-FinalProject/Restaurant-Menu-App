@@ -30,6 +30,7 @@ const handleLogin = async (e) => {
       // Login success - handle redirect or token save
       alert('Login successful!')
       router.push('/admin/dashboard')
+      // router.push('/select-restaurant')
       // console.log(data)
     } else {
       // Login failed
