@@ -1,14 +1,14 @@
 <template>
  
-<Hero />
-<Menu />
+<!-- <Hero />
+<Menu /> -->
+<Landing />
 
 
 </template>
 
 <script setup>
-import Hero from '../../components/Hero/Hero.vue'
-import Menu from '../../components/Menu/Menu.vue'
+import Landing from '../../components/Landing/Landing.vue'
 
 </script>
 
