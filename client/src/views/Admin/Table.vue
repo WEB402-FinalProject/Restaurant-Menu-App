@@ -13,6 +13,7 @@
           <TableRow>
             <TableHead class="w-[100px]">Name</TableHead>
             <TableHead>Seats</TableHead>
+            <TableHead>Public Link</TableHead>
             <TableHead class="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -20,22 +21,51 @@
           <TableRow v-for="table in tables" :key="table._id">
             <TableCell class="font-medium">{{ table.tableNumber }}</TableCell>
             <TableCell>{{ table.seatingCapacity }}</TableCell>
+            <TableCell>
+              <a
+                :href="table.orderingLink"
+                target="_blank"
+                class="text-blue-600 underline text-sm"
+              >
+                Open Link
+              </a>
+            </TableCell>
             <TableCell class="text-right">
-              <div class="flex justify-end gap-2">
-                <UiButton
-                  variant="outline"
-                  size="sm"
-                  @click="openEditModal(table)"
+              <div class="flex flex-col items-end gap-1">
+                <div class="flex gap-2">
+                  <UiButton
+                    variant="outline"
+                    size="sm"
+                    @click="openEditModal(table)"
+                    >Edit</UiButton
+                  >
+                  <UiButton
+                    variant="destructive"
+                    size="sm"
+                    @click="openDeleteDialog(table._id)"
+                    >Delete</UiButton
+                  >
+                  <UiButton
+                    variant="outline"
+                    size="sm"
+                    @click="openQRModal(table.orderingLink)"
+                  >
+                    <QrCode class="w-4 h-4" />
+                  </UiButton>
+                </div>
+                <a
+                  :href="table.orderingLink"
+                  target="_blank"
+                  class="text-blue-500 underline text-xs"
                 >
-                  Edit
-                </UiButton>
-                <UiButton
-                  variant="destructive"
-                  size="sm"
-                  @click="openDeleteDialog(table._id)"
+                  Open Link
+                </a>
+                <button
+                  @click="copyToClipboard(table.orderingLink)"
+                  class="text-gray-500 text-xs hover:text-gray-800"
                 >
-                  Delete
-                </UiButton>
+                  Copy Link
+                </button>
               </div>
             </TableCell>
           </TableRow>
@@ -81,6 +111,27 @@
       </UiDialogContent>
     </UiDialog>
   </div>
+  <UiDialog :open="showQRModal" @update:open="showQRModal = $event">
+    <UiDialogContent>
+      <UiDialogHeader>
+        <UiDialogTitle>Table QR Code</UiDialogTitle>
+        <UiDialogDescription
+          >Scan this code to open the menu.</UiDialogDescription
+        >
+      </UiDialogHeader>
+      <div class="flex justify-center my-4">
+        <QrcodeVue :value="selectedQRLink" :size="200" />
+      </div>
+      <UiDialogFooter class="flex justify-end">
+        <UiButton @click="copyToClipboard(selectedQRLink)">
+          <Copy class="w-4 h-4 mr-2" /> Copy Link
+        </UiButton>
+        <UiButton variant="outline" @click="showQRModal = false"
+          >Close</UiButton
+        >
+      </UiDialogFooter>
+    </UiDialogContent>
+  </UiDialog>
 </template>
 
 <script setup>
@@ -88,6 +139,21 @@ import { ref, onMounted } from "vue";
 import { CirclePlus } from "lucide-vue-next";
 import { createIcons, icons } from "lucide";
 createIcons({ icons });
+import QrcodeVue from "qrcode.vue";
+import { Copy, QrCode } from "lucide-vue-next";
+
+function openQRModal() {
+  selectedQRLink.value = link;
+  showQRModal.value = true;
+}
+
+function copyToClipboard() {
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Link copied to clipboard!");
+  }, () => {
+    alert("Failed to copy link.");
+  });
+}
 
 // UI Components
 import { Button as UiButton } from "@/components/ui/button";
@@ -121,6 +187,8 @@ const showEditModal = ref(false);
 const showDeleteDialog = ref(false);
 const selectedTable = ref(null);
 const tableToDelete = ref(null);
+const showQRModal = ref(false);
+const selectedQRLink = ref("");
 
 // Handlers
 async function handleAddTable(tableData) {

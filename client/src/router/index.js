@@ -62,7 +62,12 @@ const routes = [
     path: '/select-restaurant',
     name: 'SelectRestaurant',
     component: SelectRestaurant
-  }
+  },
+  {
+    path: "/r/:restaurantId/t/:tableNumber",
+    name: "PublicMenu",
+    component: () => import("@/views/Public/MenuView.vue"),
+  }  
 ]
 
 const router = createRouter({
