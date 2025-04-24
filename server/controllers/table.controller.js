@@ -5,7 +5,7 @@ exports.createTable = async (req, res) => {
   try {
     const table = await Table.create({
       ...req.body,
-    //   restaurant: req.restaurantId,
+      restaurant: req.restaurantId,
     });
     res.json(table);
   } catch (err) {
@@ -30,9 +30,9 @@ exports.getTableById = async (req, res) => {
     if (!table)
       return res.status(404).json({ message: "Table not found" });
 
-    // if (String(table.restaurant) !== String(req.restaurantId)) {
-    //   return res.status(403).json({ message: "Unauthorized access" });
-    // }
+    if (String(table.restaurant) !== String(req.restaurantId)) {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
 
     res.json(table);
   } catch (err) {
@@ -47,9 +47,9 @@ exports.updateTable = async (req, res) => {
     if (!table)
       return res.status(404).json({ message: "Table not found" });
 
-    // if (String(table.restaurant) !== String(req.restaurantId)) {
-    //   return res.status(403).json({ message: "Unauthorized access" });
-    // }
+    if (String(table.restaurant) !== String(req.restaurantId)) {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
 
     Object.assign(table, req.body);
     await table.save();
@@ -66,9 +66,9 @@ exports.deleteTable = async (req, res) => {
     if (!table)
       return res.status(404).json({ message: "Table not found" });
 
-    // if (String(table.restaurant) !== String(req.restaurantId)) {
-    //   return res.status(403).json({ message: "Unauthorized access" });
-    // }
+    if (String(table.restaurant) !== String(req.restaurantId)) {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
 
     await table.deleteOne();
     res.json({ msg: "Table deleted" });
