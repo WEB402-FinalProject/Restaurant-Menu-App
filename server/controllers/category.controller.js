@@ -15,7 +15,6 @@ exports.createCategory = async (req, res) => {
 
 // Get all categories for the logged-in user's restaurant
 exports.getCategories = async (req, res) => {
-  console.log(req.restaurantId);
   try {
     const categories = await Category.find({
       restaurantId: req.restaurantId,
