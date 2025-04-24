@@ -11,8 +11,11 @@ import SignIn from '@/views/SignIn.vue'
 import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
 import Menu from '@/views/Admin/Menu.vue'
+
 import Restaurant from '@/views/Admin/Restaurant.vue' // Add this import for the Restaurant CRUD
 import SelectRestaurant from '@/views/Admin/SelectRestaurant.vue' // Import SelectRestaurant
+import MenuByCategory from '@/views/Users/MenuByCategory.vue'
+
 
 const routes = [
   {
@@ -38,7 +41,9 @@ const routes = [
     component: UserLayout,
     children: [
       { path: '', component: UserHome },
+      { path: 'menu/:category', component: MenuByCategory }, // <--  dynamic route here
     ]
+
   },
   {
     path: '/sign-in',

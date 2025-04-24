@@ -75,3 +75,13 @@ exports.deleteMenu = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+  exports.getMenusByCategory = async (req, res) => {
+    try {
+      const categoryId = req.params.categoryId;
+      const menus = await Menu.find({ category: categoryId }).populate('category', 'name');
+      res.json(menus);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };

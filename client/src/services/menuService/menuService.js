@@ -26,8 +26,14 @@ export default {
   },
 
   getMenuById(id) {
+
     return api.get(`/menu/${id}`, {
       withCredentials: true, // Ensure credentials are sent with the request
     });
+  },
+
+  getMenuByCategoryId(categoryId) {
+    return api.get(`/menu/category/${categoryId}`);
   }
+
 }
