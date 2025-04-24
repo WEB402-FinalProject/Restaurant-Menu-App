@@ -9,8 +9,9 @@ router.use(requireAuth);
 router.use(verifyRestaurantOwnership);
 
 // You can add authentication middleware here if needed
+router.get('/', verifyRestaurantOwnership, tableController.getTables);
 router.post('/', verifyRestaurantOwnership, tableController.createTable);
-router.get('/:restaurantId', verifyRestaurantOwnership, tableController.getTables);
+router.get('/:restaurantId', verifyRestaurantOwnership, tableController.getTableById);
 router.put('/:id', verifyRestaurantOwnership, tableController.updateTable);
 router.delete('/:id', verifyRestaurantOwnership, tableController.deleteTable);
 
