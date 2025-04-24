@@ -12,7 +12,8 @@ import Register from '@/views/Register.vue'
 import Category from '@/views/Admin/Category.vue'
 import Menu from '@/views/Admin/Menu.vue'
 import Restaurant from '@/views/Admin/Restaurant.vue'
-import Table from '@/views/Admin/Table.vue' // ✅ Add this import for the Table CRUD
+import Table from '@/views/Admin/Table.vue'
+import Orders from '@/views/Admin/Orders.vue' // ✅ New import
 import SelectRestaurant from '@/views/Admin/SelectRestaurant.vue'
 import MenuByCategory from '@/views/Users/MenuByCategory.vue'
 
@@ -25,7 +26,8 @@ const routes = [
       { path: 'category', component: Category },
       { path: 'menu', component: Menu },
       { path: 'restaurant', component: Restaurant },
-      { path: 'table', component: Table }, // ✅ Add this route for Table CRUD
+      { path: 'table', component: Table },
+      { path: 'orders', component: Orders }, // ✅ New route for Orders page
     ],
     beforeEnter: (to, from, next) => {
       if (!localStorage.getItem('selectedRestaurant')) {
@@ -62,6 +64,11 @@ const routes = [
     path: '/select-restaurant',
     name: 'SelectRestaurant',
     component: SelectRestaurant
+  },
+  {
+    path: "/r/:restaurantId/t/:tableNumber",
+    name: "PublicMenu",
+    component: () => import("@/views/Public/MenuView.vue"),
   }
 ]
 

@@ -32,7 +32,7 @@ exports.createTable = async (req, res) => {
 // Get all tables for the logged-in user's restaurant
 exports.getTables = async (req, res) => {
   try {
-    const tables = await Table.find({ restaurant: req.restaurantId });
+    const tables = await Table.find({ restaurant: req.restaurantId }).lean({ virtuals: true });
     res.json(tables);
   } catch (err) {
     console.error(err);

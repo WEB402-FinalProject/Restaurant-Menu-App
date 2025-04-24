@@ -13,6 +13,7 @@
           <TableRow>
             <TableHead class="w-[100px]">Name</TableHead>
             <TableHead>Seats</TableHead>
+            <TableHead>Public Link</TableHead>
             <TableHead class="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -20,22 +21,38 @@
           <TableRow v-for="table in tables" :key="table._id">
             <TableCell class="font-medium">{{ table.tableNumber }}</TableCell>
             <TableCell>{{ table.seatingCapacity }}</TableCell>
+            <TableCell>
+              <a
+                :href="table.orderingUrl"
+                target="_blank"
+                class="text-blue-600 underline text-sm"
+              >
+                {{ getOrderingUrl(table) }}
+              </a>
+            </TableCell>
             <TableCell class="text-right">
-              <div class="flex justify-end gap-2">
-                <UiButton
-                  variant="outline"
-                  size="sm"
-                  @click="openEditModal(table)"
-                >
-                  Edit
-                </UiButton>
-                <UiButton
-                  variant="destructive"
-                  size="sm"
-                  @click="openDeleteDialog(table._id)"
-                >
-                  Delete
-                </UiButton>
+              <div class="flex flex-col items-end gap-1">
+                <div class="flex gap-2">
+                  <UiButton
+                    variant="outline"
+                    size="sm"
+                    @click="openEditModal(table)"
+                    >Edit</UiButton
+                  >
+                  <UiButton
+                    variant="destructive"
+                    size="sm"
+                    @click="openDeleteDialog(table._id)"
+                    >Delete</UiButton
+                  >
+                  <UiButton
+                    variant="outline"
+                    size="sm"
+                    @click="openQrModal(table)"
+                  >
+                    <QrCode class="w-4 h-4" />
+                  </UiButton>
+                </div>
               </div>
             </TableCell>
           </TableRow>
@@ -81,6 +98,33 @@
       </UiDialogContent>
     </UiDialog>
   </div>
+  <!-- QR Modal -->
+  <!-- QR Modal -->
+  <UiDialog :open="showQr" @update:open="showQr = $event">
+    <UiDialogContent>
+      <UiDialogHeader>
+        <UiDialogTitle
+          >QR Code for Table {{ selectedTable?.tableNumber }}</UiDialogTitle
+        >
+        <UiDialogDescription>
+          Scan this code or use the link below to access the ordering page for
+          this table.
+        </UiDialogDescription>
+      </UiDialogHeader>
+
+      <div class="flex flex-col items-center justify-center gap-4 my-4">
+        <qrcode-vue :value="orderingUrl" :size="200" />
+        <p class="text-sm text-center break-all">{{ orderingUrl }}</p>
+      </div>
+
+      <UiDialogFooter>
+        <UiButton variant="outline" @click="copyToClipboard">
+          Copy Link
+        </UiButton>
+        <UiButton @click="showQr = false"> Close </UiButton>
+      </UiDialogFooter>
+    </UiDialogContent>
+  </UiDialog>
 </template>
 
 <script setup>
@@ -88,6 +132,8 @@ import { ref, onMounted } from "vue";
 import { CirclePlus } from "lucide-vue-next";
 import { createIcons, icons } from "lucide";
 createIcons({ icons });
+import QrcodeVue from "qrcode.vue";
+import { Copy, QrCode } from "lucide-vue-next";
 
 // UI Components
 import { Button as UiButton } from "@/components/ui/button";
@@ -121,6 +167,8 @@ const showEditModal = ref(false);
 const showDeleteDialog = ref(false);
 const selectedTable = ref(null);
 const tableToDelete = ref(null);
+const showQr = ref(false);
+const orderingUrl = ref("");
 
 // Handlers
 async function handleAddTable(tableData) {
@@ -181,4 +229,20 @@ onMounted(async () => {
     alert("Failed to load tables.");
   }
 });
+
+function openQrModal(table) {
+  selectedTable.value = table;
+  orderingUrl.value = `${window.location.origin}/r/${table.restaurant}/t/${table.tableNumber}`;
+  showQr.value = true;
+}
+
+function copyToClipboard() {
+  navigator.clipboard.writeText(orderingUrl.value).then(() => {
+    alert("Link copied to clipboard!");
+  });
+}
+
+function getOrderingUrl(table) {
+  return `${window.location.origin}/r/${table.restaurant}/t/${table.tableNumber}`;
+}
 </script>
