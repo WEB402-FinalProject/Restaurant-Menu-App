@@ -15,6 +15,6 @@ router.get('/:id', getMenuById)
 router.put('/:id', verifyRestaurantOwnership, updateMenu)
 router.delete('/:id', verifyRestaurantOwnership, deleteMenu)
 
-router.get('/category/:categoryId', getMenusByCategory);
+// router.get('/category/:categoryId', getMenusByCategory);
 
 module.exports = router;
