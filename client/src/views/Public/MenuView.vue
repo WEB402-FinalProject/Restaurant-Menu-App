@@ -140,6 +140,7 @@ const totalItems = computed(() =>
 );
 
 // Place order
+// Place order function in frontend
 async function placeOrder() {
   try {
     const payload = {
@@ -160,4 +161,5 @@ async function placeOrder() {
     alert("Failed to place order.");
   }
 }
+
 </script>

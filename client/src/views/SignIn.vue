@@ -31,7 +31,6 @@ const handleLogin = async (e) => {
       alert('Login successful!')
       router.push('/admin/dashboard')
       // router.push('/select-restaurant')
-      // console.log(data)
     } else {
       // Login failed
       alert(data.message || 'Login failed')

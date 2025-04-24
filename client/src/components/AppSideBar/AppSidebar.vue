@@ -79,7 +79,6 @@ if (selectedRestaurantName) {
   });
 }
 
-console.log(items);  // Check the updated menu items array
 </script>
 
 <template>
