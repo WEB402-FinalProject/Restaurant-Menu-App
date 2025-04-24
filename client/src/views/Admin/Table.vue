@@ -18,8 +18,8 @@
         </TableHeader>
         <TableBody>
           <TableRow v-for="table in tables" :key="table._id">
-            <TableCell class="font-medium">{{ table.name }}</TableCell>
-            <TableCell>{{ table.seats }}</TableCell>
+            <TableCell class="font-medium">{{ table.tableNumber }}</TableCell>
+            <TableCell>{{ table.seatingCapacity }}</TableCell>
             <TableCell class="text-right">
               <div class="flex justify-end gap-2">
                 <UiButton
