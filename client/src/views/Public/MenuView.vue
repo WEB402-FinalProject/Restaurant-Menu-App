@@ -1,42 +1,110 @@
 <template>
-  <div>
-    <h2 class="text-2xl font-bold mb-4">{{ restaurantName }}</h2>
+  <div class="p-4">
+    <!-- Restaurant Name -->
+    <h2 class="text-3xl font-bold mb-6 text-center">{{ restaurantName }}</h2>
 
-    <!-- Menu List -->
-    <div v-for="category in categories" :key="category._id" class="mb-6">
-      <h3 class="text-xl font-semibold">{{ category.name }}</h3>
-      <ul>
-        <li v-for="item in category.items" :key="item._id" class="p-2 border-b">
-          <div class="flex justify-between items-center">
-            <span>{{ item.title }} - ${{ item.price }}</span>
-            <button
-              class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
-              @click="addToCart(item)"
-            >
-              Add
-            </button>
-          </div>
-        </li>
-      </ul>
+    <!-- Filters -->
+    <div class="flex w-full max-w-4xl mx-auto mb-6 gap-4">
+      <input
+        v-model="searchQuery"
+        class="flex-grow p-3 border rounded-md"
+        type="text"
+        placeholder="Search Menu Items..."
+      />
+      <select v-model="selectedCategory" class="w-40 p-3 border rounded-md">
+        <option value="">All Categories</option>
+        <option
+          v-for="category in categories"
+          :key="category._id"
+          :value="category._id"
+        >
+          {{ category.name }}
+        </option>
+      </select>
+      <select v-model="sortOrder" class="w-40 p-3 border rounded-md">
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="title-asc">Title: A to Z</option>
+        <option value="title-desc">Title: Z to A</option>
+      </select>
     </div>
 
-    <!-- Cart Section -->
+    <!-- Menu Categories -->
     <div
-      v-if="cart.length > 0"
-      class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 space-y-2"
+      v-for="category in filteredCategories"
+      :key="category._id"
+      class="mb-8"
     >
-      <h4 class="text-lg font-bold">Cart</h4>
+      <h3 class="text-2xl font-semibold mb-4">{{ category.name }}</h3>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 scrollable-menu"
+      >
+        <div
+          v-for="item in filteredItems(category.items)"
+          :key="item._id"
+          class="flex flex-col bg-white border rounded-lg shadow hover:shadow-lg overflow-hidden"
+        >
+          <img
+            v-if="item.image"
+            :src="item.image"
+            alt="Menu Item Image"
+            class="w-full h-40 object-cover"
+          />
+          <div class="p-4 flex flex-col justify-between flex-grow">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-lg font-semibold">{{ item.title }}</span>
+              <span class="text-gray-600">${{ item.price }}</span>
+            </div>
+            <p class="text-sm text-gray-500 mb-4">{{ item.description }}</p>
+            <button
+              class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+              @click="addToCart(item)"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div class="max-h-40 overflow-y-auto">
+    <!-- Open Cart Button -->
+    <button
+      v-if="cart.length > 0"
+      class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-blue-700 z-50"
+      @click="showCartModal = true"
+    >
+      🛒 View Cart ({{ totalItems }})
+    </button>
+
+    <!-- Cart Modal -->
+    <div
+      v-if="showCartModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-lg"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Your Cart</h3>
+          <button
+            @click="showCartModal = false"
+            class="text-gray-500 hover:text-red-500 text-lg"
+          >
+            ✕
+          </button>
+        </div>
+
         <ul>
           <li
             v-for="(item, index) in cart"
             :key="item._id"
-            class="flex justify-between items-center py-1"
+            class="flex justify-between items-center py-2 border-b"
           >
             <div>
-              {{ item.title }} x {{ item.quantity }}
-              <span class="text-gray-500">(${{ item.price }})</span>
+              <span class="font-medium"
+                >{{ item.title }} x {{ item.quantity }}</span
+              >
+              <p class="text-sm text-gray-500">${{ item.price }}</p>
             </div>
             <div class="flex items-center gap-2">
               <button @click="decreaseQuantity(item)" class="text-red-600 px-2">
@@ -57,19 +125,19 @@
             </div>
           </li>
         </ul>
-      </div>
 
-      <div class="flex justify-between font-semibold mt-2">
-        <span>Total</span>
-        <span>${{ totalPrice }}</span>
-      </div>
+        <div class="flex justify-between mt-4 text-lg font-semibold">
+          <span>Total:</span>
+          <span>${{ totalPrice }}</span>
+        </div>
 
-      <button
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 mt-2 rounded"
-        @click="placeOrder"
-      >
-        Place Order ({{ totalItems }} items)
-      </button>
+        <button
+          class="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          @click="confirmPlaceOrder"
+        >
+          Place Order
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -85,50 +153,51 @@ const tableNumber = route.params.tableNumber;
 
 const restaurantName = ref("");
 const categories = ref([]);
+const searchQuery = ref("");
+const selectedCategory = ref("");
+const sortOrder = ref("price-asc");
 const cart = ref([]);
+const showCartModal = ref(false);
 
-// Fetch restaurant and menu
+// Load restaurant and menu
 onMounted(async () => {
   try {
-    const restaurantRes = await api.get(`/public/restaurant/${restaurantId}`);
-    restaurantName.value = restaurantRes.data.name;
+    const res = await api.get(`/public/restaurant/${restaurantId}`);
+    restaurantName.value = res.data.name;
 
     const menuRes = await api.get(`/public/restaurant/${restaurantId}/menu`);
     categories.value = menuRes.data;
-  } catch (error) {
-    console.error("Error loading restaurant or menu:", error);
+  } catch (err) {
+    console.error("Failed to load data:", err);
   }
 });
 
-// Add item to cart
-function addToCart(item) {
-  const existing = cart.value.find((i) => i._id === item._id);
-  if (existing) {
-    existing.quantity++;
+// Cart logic
+const addToCart = (item) => {
+  const found = cart.value.find((i) => i._id === item._id);
+  if (found) {
+    found.quantity++;
   } else {
     cart.value.push({ ...item, quantity: 1 });
   }
-}
+};
 
-// Remove item from cart
-function removeFromCart(index) {
+const removeFromCart = (index) => {
   cart.value.splice(index, 1);
-}
+};
 
-// Increase/Decrease quantity
-function increaseQuantity(item) {
+const increaseQuantity = (item) => {
   item.quantity++;
-}
+};
 
-function decreaseQuantity(item) {
+const decreaseQuantity = (item) => {
   if (item.quantity > 1) {
     item.quantity--;
   } else {
     cart.value = cart.value.filter((i) => i._id !== item._id);
   }
-}
+};
 
-// Total price and item count
 const totalPrice = computed(() =>
   cart.value
     .reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -139,9 +208,34 @@ const totalItems = computed(() =>
   cart.value.reduce((sum, item) => sum + item.quantity, 0)
 );
 
+// Filtering
+const filteredCategories = computed(() =>
+  categories.value.filter((category) =>
+    category.items.some((item) =>
+      item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  )
+);
+
+const filteredItems = (items) => {
+  let filtered = items.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+
+  if (sortOrder.value === "price-asc")
+    filtered.sort((a, b) => a.price - b.price);
+  else if (sortOrder.value === "price-desc")
+    filtered.sort((a, b) => b.price - a.price);
+  else if (sortOrder.value === "title-asc")
+    filtered.sort((a, b) => a.title.localeCompare(b.title));
+  else if (sortOrder.value === "title-desc")
+    filtered.sort((a, b) => b.title.localeCompare(a.title));
+
+  return filtered;
+};
+
 // Place order
-// Place order function in frontend
-async function placeOrder() {
+const confirmPlaceOrder = async () => {
   try {
     const payload = {
       items: cart.value.map((item) => ({
@@ -156,10 +250,17 @@ async function placeOrder() {
     );
     alert("Order placed successfully!");
     cart.value = [];
-  } catch (error) {
-    console.error("Order failed:", error);
+    showCartModal.value = false;
+  } catch (err) {
+    console.error("Order failed:", err);
     alert("Failed to place order.");
   }
-}
-
+};
 </script>
+
+<style scoped>
+.scrollable-menu {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+}
+</style>
