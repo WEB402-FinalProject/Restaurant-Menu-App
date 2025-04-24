@@ -1,15 +1,31 @@
-const Table = require('../models/Table');
+const Table = require("../models/Table");
 
 // Create a table, assigning restaurantId from the logged-in user
+// Assuming body has { number: 5 }
 exports.createTable = async (req, res) => {
   try {
-    const table = await Table.create({
-      ...req.body,
-      restaurant: req.restaurantId,
+    const { tableNumber, seatingCapacity } = req.body;
+
+    // Ensure data is received
+    if (!tableNumber || !seatingCapacity) {
+      return res.status(400).json({ message: "Table number and seating capacity are required" });
+    }
+
+    // Create the new table, associating it with the restaurantId from the request
+    const newTable = new Table({
+      tableNumber,
+      seatingCapacity,
+      restaurant: req.restaurantId, // Assuming req.restaurantId is set correctly
     });
-    res.json(table);
-  } catch (err) {
-    res.status(500).send(err.message);
+
+    // Save the new table to the database
+    await newTable.save();
+
+    // Respond with the created table
+    res.status(201).json(newTable);
+  } catch (error) {
+    console.error("Error creating table:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -19,6 +35,7 @@ exports.getTables = async (req, res) => {
     const tables = await Table.find({ restaurant: req.restaurantId });
     res.json(tables);
   } catch (err) {
+    console.error(err);
     res.status(500).send(err.message);
   }
 };
@@ -27,8 +44,7 @@ exports.getTables = async (req, res) => {
 exports.getTableById = async (req, res) => {
   try {
     const table = await Table.findById(req.params.id);
-    if (!table)
-      return res.status(404).json({ message: "Table not found" });
+    if (!table) return res.status(404).json({ message: "Table not found" });
 
     if (String(table.restaurant) !== String(req.restaurantId)) {
       return res.status(403).json({ message: "Unauthorized access" });
@@ -44,8 +60,7 @@ exports.getTableById = async (req, res) => {
 exports.updateTable = async (req, res) => {
   try {
     const table = await Table.findById(req.params.id);
-    if (!table)
-      return res.status(404).json({ message: "Table not found" });
+    if (!table) return res.status(404).json({ message: "Table not found" });
 
     if (String(table.restaurant) !== String(req.restaurantId)) {
       return res.status(403).json({ message: "Unauthorized access" });
@@ -63,8 +78,7 @@ exports.updateTable = async (req, res) => {
 exports.deleteTable = async (req, res) => {
   try {
     const table = await Table.findById(req.params.id);
-    if (!table)
-      return res.status(404).json({ message: "Table not found" });
+    if (!table) return res.status(404).json({ message: "Table not found" });
 
     if (String(table.restaurant) !== String(req.restaurantId)) {
       return res.status(403).json({ message: "Unauthorized access" });
